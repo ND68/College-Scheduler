@@ -1,4 +1,4 @@
-package com.example.collegescheduler.ui.ToDo;
+package com.example.collegescheduler.ui.todo;
 
 import androidx.lifecycle.ViewModelProvider;
 
@@ -14,12 +14,12 @@ import android.view.ViewGroup;
 
 import com.example.collegescheduler.R;
 
-public class ToDo extends Fragment {
+public class TodoFragment extends Fragment {
 
-    private ToDoViewModel mViewModel;
+    private TodoViewModel mViewModel;
 
-    public static ToDo newInstance() {
-        return new ToDo();
+    public static TodoFragment newInstance() {
+        return new TodoFragment();
     }
 
     @Override
@@ -31,7 +31,7 @@ public class ToDo extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(ToDoViewModel.class);
+        mViewModel = new ViewModelProvider(this).get(TodoViewModel.class);
         // TODO: Use the ViewModel
     }
 

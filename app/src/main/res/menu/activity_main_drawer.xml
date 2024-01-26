@@ -16,6 +16,9 @@
             android:id="@+id/nav_exams"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="@string/menu_exams" />
+        <item
+            android:id="@+id/nav_todo"
+            android:title="@string/menu_todo" />
 
     </group>
 </menu>
