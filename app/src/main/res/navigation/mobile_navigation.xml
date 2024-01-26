@@ -8,18 +8,26 @@
     <fragment
         android:id="@+id/nav_classes"
         android:name="com.example.collegescheduler.ui.classes.ClassesFragment"
-        android:label="@string/menu_home"
+        android:label="@string/menu_classes"
         tools:layout="@layout/fragment_classes" />
 
     <fragment
         android:id="@+id/nav_assignments"
         android:name="com.example.collegescheduler.ui.assignments.AssignmentsFragment"
-        android:label="@string/menu_gallery"
+        android:label="@string/menu_assignments"
         tools:layout="@layout/fragment_assignments" />
 
     <fragment
         android:id="@+id/nav_exams"
         android:name="com.example.collegescheduler.ui.exams.ExamsFragment"
-        android:label="@string/menu_slideshow"
+        android:label="@string/menu_exams"
         tools:layout="@layout/fragment_exams" />
+    <fragment
+        android:id="@+id/nav_todo"
+        android:name="com.example.collegescheduler.ui.ToDo.ToDo"
+        android:label="@string/todo"
+        tools:layout="@layout/fragment_todo" />
+
+
+
 </navigation>

@@ -16,5 +16,6 @@
             android:id="@+id/nav_exams"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="@string/menu_exams" />
+
     </group>
 </menu>
