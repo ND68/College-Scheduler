@@ -3,23 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_home">
+    app:startDestination="@+id/nav_classes">
 
     <fragment
-        android:id="@+id/nav_home"
-        android:name="com.example.collegescheduler.ui.home.HomeFragment"
+        android:id="@+id/nav_classes"
+        android:name="com.example.collegescheduler.ui.classes.ClassesFragment"
         android:label="@string/menu_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_classes" />
 
     <fragment
-        android:id="@+id/nav_gallery"
-        android:name="com.example.collegescheduler.ui.gallery.GalleryFragment"
+        android:id="@+id/nav_assignments"
+        android:name="com.example.collegescheduler.ui.assignments.AssignmentsFragment"
         android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
+        tools:layout="@layout/fragment_assignments" />
 
     <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="com.example.collegescheduler.ui.slideshow.SlideshowFragment"
+        android:id="@+id/nav_exams"
+        android:name="com.example.collegescheduler.ui.exams.ExamsFragment"
         android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
+        tools:layout="@layout/fragment_exams" />
 </navigation>
