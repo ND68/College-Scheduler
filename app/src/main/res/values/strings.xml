@@ -12,4 +12,5 @@
     <string name="menu_exams">Exams</string>
     <string name="classes">Classes</string>
     <string name="menu_todo">To-Do</string>
+    <string name="class_name_and_section">Class Section</string>
 </resources>
