@@ -24,7 +24,7 @@ public class ExamsFragment extends Fragment {
         binding = FragmentExamsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textSlideshow;
+        final TextView textView = binding.examSectionTextbox;
         slideshowViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }

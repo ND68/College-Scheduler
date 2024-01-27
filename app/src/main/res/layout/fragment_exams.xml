@@ -1,22 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.exams.ExamsFragment"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.exams.ExamsFragment">
+    android:layout_height="match_parent" >
 
-    <TextView
-        android:id="@+id/text_slideshow"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_height="match_parent" >
+
+        <TextView
+            android:id="@+id/class_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/menu_exams"
+            android:textSize="34sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ListView
+            android:id="@+id/listView33"
+            android:layout_width="0dp"
+            android:layout_height="400dp"
+            app:layout_constraintBottom_toTopOf="@+id/exam_section_textbox"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/class_header" />
+
+        <EditText
+            android:id="@+id/exam_section_textbox"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:ems="10"
+            android:inputType="text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/listView33"
+            android:hint="Name" />
+
+        <EditText
+            android:id="@+id/editTextDate1"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:ems="10"
+            android:inputType="date"
+            android:hint="Data"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/exam_section_textbox" />
+
+        <EditText
+            android:id="@+id/editTextTime1"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:ems="10"
+            android:inputType="text"
+            android:hint="Course"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextDate1" />
+
+        <EditText
+            android:id="@+id/editTextText31"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:ems="10"
+            android:inputType="time"
+            android:hint="Time"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextTime1" />
+
+        <EditText
+            android:id="@+id/editTextText41"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:ems="10"
+            android:inputType="text"
+            android:hint="@string/location"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextText31" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
