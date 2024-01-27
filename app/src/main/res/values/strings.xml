@@ -13,4 +13,15 @@
     <string name="classes">Classes</string>
     <string name="menu_todo">To-Do</string>
     <string name="class_name_and_section">Class Section</string>
+    <string name="date_range">Date Range</string>
+    <string name="time">Time</string>
+    <string name="days_repeated">Days Repeated</string>
+    <string name="location">Location</string>
+    <string name="instructor">Instructor</string>
+    <string name="assignment_title">Assignment Title</string>
+    <string name="due_date">Due Date</string>
+    <string name="associated_class">Associated Class</string>
+
+
+
 </resources>

@@ -48,7 +48,7 @@
             android:layout_height="50dp"
             android:ems="10"
             android:inputType="date"
-            android:text="Date Range"
+            android:text="@string/date_range"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/class_section_textbox" />
@@ -59,7 +59,7 @@
             android:layout_height="50dp"
             android:ems="10"
             android:inputType="time"
-            android:text="Time"
+            android:text="@string/time"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/editTextDate" />
@@ -70,7 +70,7 @@
             android:layout_height="50dp"
             android:ems="10"
             android:inputType="text"
-            android:text="Days Repeated"
+            android:text="@string/days_repeated"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/editTextTime" />
@@ -81,7 +81,7 @@
             android:layout_height="50dp"
             android:ems="10"
             android:inputType="text"
-            android:text="Location"
+            android:text="@string/location"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/editTextText3" />
@@ -92,7 +92,7 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:inputType="text"
-            android:text="Professor"
+            android:text="@string/instructor"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
