@@ -12,7 +12,7 @@
 
 
         <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/textViewA"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/menu_assignments"
@@ -29,10 +29,10 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView4" />
+            app:layout_constraintTop_toBottomOf="@+id/textViewA" />
 
         <EditText
-            android:id="@+id/editTextText2"
+            android:id="@+id/editTextTaskT"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:layout_marginTop="9dp"
@@ -45,7 +45,7 @@
             app:layout_constraintTop_toBottomOf="@+id/listView" />
 
         <EditText
-            android:id="@+id/editTextDate2"
+            android:id="@+id/editTextDateA"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:ems="10"
@@ -53,10 +53,10 @@
             android:hint="@string/due_date"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextText2" />
+            app:layout_constraintTop_toBottomOf="@+id/editTextTaskT" />
 
         <EditText
-            android:id="@+id/editTextText6"
+            android:id="@+id/editTextClassA"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:ems="10"
@@ -64,7 +64,7 @@
             android:hint="@string/associated_class"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextDate2" />
+            app:layout_constraintTop_toBottomOf="@+id/editTextDateA" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

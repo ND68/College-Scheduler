@@ -25,13 +25,13 @@
             android:id="@+id/listView33"
             android:layout_width="0dp"
             android:layout_height="400dp"
-            app:layout_constraintBottom_toTopOf="@+id/exam_section_textbox"
+            app:layout_constraintBottom_toTopOf="@+id/editTextNameE"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/class_header" />
 
         <EditText
-            android:id="@+id/exam_section_textbox"
+            android:id="@+id/editTextNameE"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:ems="10"
@@ -42,7 +42,7 @@
             android:hint="Name" />
 
         <EditText
-            android:id="@+id/editTextDate1"
+            android:id="@+id/editTextDateE"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:ems="10"
@@ -50,10 +50,10 @@
             android:hint="Data"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/exam_section_textbox" />
+            app:layout_constraintTop_toBottomOf="@+id/editTextNameE" />
 
         <EditText
-            android:id="@+id/editTextTime1"
+            android:id="@+id/editTextCourseE"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:ems="10"
@@ -61,10 +61,10 @@
             android:hint="Course"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextDate1" />
+            app:layout_constraintTop_toBottomOf="@+id/editTextDateE" />
 
         <EditText
-            android:id="@+id/editTextText31"
+            android:id="@+id/editTextTimeE"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:ems="10"
@@ -72,10 +72,10 @@
             android:hint="Time"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextTime1" />
+            app:layout_constraintTop_toBottomOf="@+id/editTextCourseE" />
 
         <EditText
-            android:id="@+id/editTextText41"
+            android:id="@+id/editTextLocationE"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:ems="10"
@@ -83,7 +83,7 @@
             android:hint="@string/location"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextText31" />
+            app:layout_constraintTop_toBottomOf="@+id/editTextTimeE" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
