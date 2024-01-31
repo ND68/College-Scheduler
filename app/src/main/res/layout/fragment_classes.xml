@@ -29,7 +29,7 @@
             app:layout_constraintBottom_toTopOf="@+id/editTextSectionC"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewE" />
+            app:layout_constraintTop_toBottomOf="@+id/textViewC" />
 
         <EditText
             android:id="@+id/editTextSectionC"
