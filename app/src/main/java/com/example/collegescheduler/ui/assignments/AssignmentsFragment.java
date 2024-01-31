@@ -24,7 +24,7 @@ public class AssignmentsFragment extends Fragment {
         binding = FragmentAssignmentsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textView4;
+        final TextView textView = binding.textViewA;
         galleryViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
