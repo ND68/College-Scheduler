@@ -26,77 +26,85 @@
             android:id="@+id/listViewClasses"
             android:layout_width="0dp"
             android:layout_height="400dp"
-            app:layout_constraintBottom_toTopOf="@+id/editTextSectionC"
+            app:layout_constraintBottom_toTopOf="@+id/inputBoxLayout"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewC" />
+            app:layout_constraintTop_toBottomOf="@+id/textViewC"
+            app:layout_constraintVertical_bias="1.0" />
 
-        <EditText
-            android:id="@+id/editTextSectionC"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:ems="10"
-            android:inputType="text"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/listViewClasses"
-            android:hint="@string/class_name_and_section" />
+        <LinearLayout
+            android:id="@+id/inputBoxLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@+id/listViewClasses"
+            tools:layout_editor_absoluteX="0dp">
 
-        <EditText
-            android:id="@+id/editTextDateC"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:ems="10"
-            android:inputType="date"
-            android:hint="@string/date_range"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextSectionC" />
+            <EditText
+                android:id="@+id/editTextSectionC"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:ems="10"
+                android:hint="@string/class_name_and_section"
+                android:inputType="text" />
 
-        <EditText
-            android:id="@+id/editTextTimeC"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:ems="10"
-            android:inputType="time"
-            android:hint="@string/time"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextDateC" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="horizontal">
 
-        <EditText
-            android:id="@+id/editTextDaysC"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:ems="10"
-            android:inputType="text"
-            android:hint="@string/days_repeated"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextTimeC" />
+                <EditText
+                    android:id="@+id/editTextDateStart"
+                    android:layout_width="105dp"
+                    android:layout_height="50dp"
+                    android:ems="10"
+                    android:hint="@string/start_date"
+                    android:inputType="date" />
 
-        <EditText
-            android:id="@+id/editTextLocationC"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:ems="10"
-            android:inputType="text"
-            android:hint="@string/location"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextDaysC" />
+                <EditText
+                    android:id="@+id/editTextDateEnd"
+                    android:layout_width="105dp"
+                    android:layout_height="50dp"
+                    android:ems="10"
+                    android:hint="@string/end_date"
+                    android:inputType="date" />
+            </LinearLayout>
 
-        <EditText
-            android:id="@+id/editTextInstructorC"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:ems="10"
-            android:hint="@string/instructor"
-            android:inputType="text"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextLocationC" />
+            <EditText
+                android:id="@+id/editTextTimeC"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:ems="10"
+                android:hint="@string/time"
+                android:inputType="time" />
 
+            <EditText
+                android:id="@+id/editTextDaysC"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:ems="10"
+                android:hint="@string/days_repeated"
+                android:inputType="text" />
+
+            <EditText
+                android:id="@+id/editTextLocationC"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:ems="10"
+                android:hint="@string/location"
+                android:inputType="text" />
+
+            <EditText
+                android:id="@+id/editTextInstructorC"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:ems="10"
+                android:hint="@string/instructor"
+                android:inputType="text" />
+
+        </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
