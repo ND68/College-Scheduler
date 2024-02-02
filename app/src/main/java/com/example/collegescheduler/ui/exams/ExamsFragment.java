@@ -93,7 +93,6 @@ public class ExamsFragment extends Fragment {
         editTextLocation.setText("");
     }
 
-    @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
