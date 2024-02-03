@@ -91,13 +91,18 @@ public class ClassesFragment extends Fragment implements AdapterView.OnItemLongC
         }
 
         AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
-        alert.setTitle("Edit Class");
+        alert.setTitle("Edit/ Delete Class");
         // this is set the view from XML inside AlertDialog
         alert.setView(alertLayout);
         // disallow cancel of AlertDialog on click of back button and outside touch
         alert.setCancelable(false);
-        alert.setNegativeButton("Cancel", (dialog, which) -> Toast.makeText(getContext(), "Edit Canceled", Toast.LENGTH_SHORT).show());
+        alert.setNeutralButton("Cancel", (dialog, which) -> Toast.makeText(getContext(), "Action Canceled", Toast.LENGTH_SHORT).show());
+        alert.setNegativeButton("Delete", (dialog, which) -> {
 
+            Toast.makeText(getContext(), "Class Deleted", Toast.LENGTH_LONG).show();
+            classes.remove(position);
+            adapter.notifyDataSetChanged();
+        });
         alert.setPositiveButton("Edit", (dialog, which) -> {
             String section = sectionInput.getText().toString().trim();
             String dateStart = dateStartInput.getText().toString().trim();
