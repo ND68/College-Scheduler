@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -19,13 +20,21 @@ import com.example.collegescheduler.R;
 import com.example.collegescheduler.databinding.FragmentClassesBinding;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ClassesFragment extends Fragment implements AdapterView.OnItemLongClickListener {
 
     private FragmentClassesBinding binding;
     ListView listView;
+    private EditText textSection, textDateStart, textDateEnd, textTime, textDays, textLocation, textInstructor;
     ArrayList<Class> classes;
+    private Button confirmEdit;
+    private ArrayAdapter<String> classesListAdapter;
+
+    private List<String> classList = new ArrayList<>();
+
     ArrayAdapter<Class> adapter;
+
 
     public class Class {
         String section;
@@ -62,15 +71,58 @@ public class ClassesFragment extends Fragment implements AdapterView.OnItemLongC
 
         listView = root.findViewById(R.id.listViewClasses);
         classes = new ArrayList<>();
-        classes.add(new Class("CS2340", "1/8/24", "4/28/24", "12:00",
-                "Wednesday", "Skiles 241", "Professor Pedro"));
+
         adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, classes);
         listView.setAdapter(adapter);
         listView.setOnItemLongClickListener(this);
+        initializeViews(root);
+
+        confirmEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addClasses();
+            }
+        });
+
+        classesListAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_1, classList);
+        listView.setAdapter(classesListAdapter);
 
         return root;
     }
+    private void initializeViews(View root) {
+        textSection = root.findViewById(R.id.editTextSectionC);
+        textDateStart = root.findViewById(R.id.editTextDateStart);
+        textDateEnd = root.findViewById(R.id.editTextDateEnd);
+        textTime = root.findViewById(R.id.editTextTimeC);
+        textDays = root.findViewById(R.id.editTextDaysC);
+        textLocation = root.findViewById(R.id.editTextLocationC);
+        textInstructor = root.findViewById(R.id.editTextInstructorC);
 
+
+        confirmEdit = root.findViewById(R.id.confirmEdit);
+        listView = root.findViewById(R.id.listViewClasses);
+    }
+    private void addClasses() {
+        String classDetails = getClassDetails();
+        if (classDetails != null) {
+            classList.add(assignmentDetails);
+            assignmentListAdapter.notifyDataSetChanged();
+            clearInputFields();
+        }
+    }
+    private String getClassDetails() {
+        String name = editTextTask.getText().toString().trim();
+        String date = editTextDate.getText().toString().trim();
+        String course = editTextClass.getText().toString().trim();
+
+
+        if (name.isEmpty() || date.isEmpty() || course.isEmpty()) {
+            return null;
+        }
+
+
+        return String.format("Name: %s\nDate: %s\nCourse: %s", name, date, course);
+    }
     public void editButtonPopup(View view, Class classObject, int position) {
         LayoutInflater inflater = getLayoutInflater();
         View alertLayout = inflater.inflate(R.layout.edit_popup, null);
