@@ -16,7 +16,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.collegescheduler.R;
 import com.example.collegescheduler.databinding.FragmentAssignmentsBinding;
-import com.example.collegescheduler.ui.exams.ExamsViewModel;
+import com.example.collegescheduler.ui.assignments.AssignmentsViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
