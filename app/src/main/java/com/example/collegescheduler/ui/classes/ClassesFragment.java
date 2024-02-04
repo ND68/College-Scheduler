@@ -98,7 +98,20 @@ public class ClassesFragment extends Fragment implements AdapterView.OnItemLongC
         if (classDetails != null) {
             classes.add(classDetails);
             adapter.notifyDataSetChanged();
+            clearInputFields();
         }
+
+
+    }
+    private void clearInputFields() {
+        textSection.setText("");
+        textDateStart.setText("");
+        textDateEnd.setText("");
+        textTime.setText("");
+        textDays.setText("");
+        textLocation.setText("");
+        textInstructor.setText("");
+
     }
     private Class getClassDetails() {
         String section = textSection.getText().toString().trim();
