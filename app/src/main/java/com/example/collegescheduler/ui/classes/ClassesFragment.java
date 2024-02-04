@@ -28,13 +28,8 @@ public class ClassesFragment extends Fragment implements AdapterView.OnItemLongC
     ListView listView;
     private EditText textSection, textDateStart, textDateEnd, textTime, textDays, textLocation, textInstructor;
     ArrayList<Class> classes;
-    private Button confirmEdit;
-    private ArrayAdapter<String> classesListAdapter;
-
-    private List<String> classList = new ArrayList<>();
-
     ArrayAdapter<Class> adapter;
-
+    private Button confirmEdit;
 
     public class Class {
         String section;
@@ -84,9 +79,6 @@ public class ClassesFragment extends Fragment implements AdapterView.OnItemLongC
             }
         });
 
-        classesListAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_1, classList);
-        listView.setAdapter(classesListAdapter);
-
         return root;
     }
     private void initializeViews(View root) {
@@ -98,30 +90,30 @@ public class ClassesFragment extends Fragment implements AdapterView.OnItemLongC
         textLocation = root.findViewById(R.id.editTextLocationC);
         textInstructor = root.findViewById(R.id.editTextInstructorC);
 
-
         confirmEdit = root.findViewById(R.id.confirmEdit);
         listView = root.findViewById(R.id.listViewClasses);
     }
     private void addClasses() {
-        String classDetails = getClassDetails();
+        Class classDetails = getClassDetails();
         if (classDetails != null) {
-            classList.add(assignmentDetails);
-            assignmentListAdapter.notifyDataSetChanged();
-            clearInputFields();
+            classes.add(classDetails);
+            adapter.notifyDataSetChanged();
         }
     }
-    private String getClassDetails() {
-        String name = editTextTask.getText().toString().trim();
-        String date = editTextDate.getText().toString().trim();
-        String course = editTextClass.getText().toString().trim();
+    private Class getClassDetails() {
+        String section = textSection.getText().toString().trim();
+        String dateStart = textDateStart.getText().toString().trim();
+        String dateEnd = textDateEnd.getText().toString().trim();
+        String time = textTime.getText().toString().trim();
+        String days = textDays.getText().toString().trim();
+        String location = textLocation.getText().toString().trim();
+        String instructor = textInstructor.getText().toString().trim();
 
-
-        if (name.isEmpty() || date.isEmpty() || course.isEmpty()) {
+        if (section.isEmpty() || dateStart.isEmpty() || dateEnd.isEmpty() || time.isEmpty() ||
+                days.isEmpty() || location.isEmpty() || instructor.isEmpty()){
             return null;
         }
-
-
-        return String.format("Name: %s\nDate: %s\nCourse: %s", name, date, course);
+        return new Class(section, dateStart, dateEnd, time, days, location, instructor);
     }
     public void editButtonPopup(View view, Class classObject, int position) {
         LayoutInflater inflater = getLayoutInflater();
