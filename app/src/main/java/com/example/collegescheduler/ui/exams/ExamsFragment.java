@@ -4,14 +4,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.collegescheduler.R;
 import com.example.collegescheduler.databinding.FragmentExamsBinding;
@@ -23,10 +23,11 @@ public class ExamsFragment extends Fragment {
 
     private FragmentExamsBinding binding;
     private ExamsViewModel examsViewModel;
-    private ListView listView;
+    private RecyclerView recyclerView;
+    private LinearLayoutManager layoutManager;
     private EditText editTextName, editTextDate, editTextCourse, editTextTime, editTextLocation;
     private Button btnAddExam;
-    private ArrayAdapter<String> examListAdapter;
+    private ExamListAdapter examListAdapter;
     private List<String> examList = new ArrayList<>();
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -45,8 +46,8 @@ public class ExamsFragment extends Fragment {
             }
         });
 
-        examListAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_1, examList);
-        listView.setAdapter(examListAdapter);
+        examListAdapter = new ExamListAdapter(examList);
+        recyclerView.setAdapter(examListAdapter);
 
         return root;
     }
@@ -58,7 +59,9 @@ public class ExamsFragment extends Fragment {
         editTextTime = root.findViewById(R.id.editTextTimeE);
         editTextLocation = root.findViewById(R.id.editTextLocationE);
         btnAddExam = root.findViewById(R.id.btnAddExam);
-        listView = root.findViewById(R.id.listViewE);
+        recyclerView = root.findViewById(R.id.recyclerViewE);
+        layoutManager = new LinearLayoutManager(requireContext());
+        recyclerView.setLayoutManager(layoutManager);
     }
 
     private void addExam() {
@@ -80,7 +83,6 @@ public class ExamsFragment extends Fragment {
         if (name.isEmpty() || date.isEmpty() || course.isEmpty() || time.isEmpty() || location.isEmpty()) {
             return null;
         }
-
 
         return String.format("Name: %s\nDate: %s\nCourse: %s\nTime: %s\nLocation: %s", name, date, course, time, location);
     }
