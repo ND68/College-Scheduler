@@ -30,7 +30,7 @@ public class TodoListAdapter extends ArrayAdapter<TodoTask> {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(R.layout.todo_list_item, parent, false);
+            convertView = LayoutInflater.from(context).inflate(R.layout.item_todo, parent, false);
         }
 
         TodoTask currentTask = getItem(position);

@@ -47,18 +47,15 @@ public class TodoFragment extends Fragment {
         listView = getView().findViewById(R.id.listViewT);
         listView.setAdapter(todoAdapter);
 
-        // Handle item click to mark task as done
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 CheckBox checkBox = view.findViewById(R.id.checkBox);
                 checkBox.setChecked(!checkBox.isChecked());
-                // Handle the logic to remove the task or update its status as needed
                 updateTaskStatus(position, checkBox.isChecked());
             }
         });
 
-        // Handle long click to edit or delete a task
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
@@ -68,7 +65,6 @@ public class TodoFragment extends Fragment {
             }
         });
 
-        // Add Task button click listener
         getView().findViewById(R.id.buttonAddTask).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,7 +72,6 @@ public class TodoFragment extends Fragment {
             }
         });
 
-        // Sort by Due Date button click listener
         getView().findViewById(R.id.buttonSortByDate).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -84,7 +79,6 @@ public class TodoFragment extends Fragment {
             }
         });
 
-        // Sort by Course button click listener
         getView().findViewById(R.id.buttonSortByCourse).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -92,7 +86,6 @@ public class TodoFragment extends Fragment {
             }
         });
 
-        // Sort by Complete/Incomplete button click listener
         getView().findViewById(R.id.buttonSortByStatus).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -101,7 +94,6 @@ public class TodoFragment extends Fragment {
         });
     }
 
-    // Add a new task to the list
     private void addTask() {
         EditText taskNameEditText = getView().findViewById(R.id.editTextTaskT);
         EditText courseEditText = getView().findViewById(R.id.editTextCourseT);
@@ -121,7 +113,6 @@ public class TodoFragment extends Fragment {
         }
     }
 
-    // Update the status of a task (complete/incomplete)
     private void updateTaskStatus(int position, boolean isChecked) {
         todoList.get(position).setCompleted(isChecked);
         // Handle the logic to remove the task or update its status as needed
@@ -131,13 +122,10 @@ public class TodoFragment extends Fragment {
         }
     }
 
-    // Edit or delete a task based on user input
     private void editOrDeleteTask(int position) {
-        // Implement the logic to edit or delete a task based on user input
-        // You can show a dialog or navigate to a new screen for editing/deleting
+
     }
 
-    // Sort tasks by due date
     private void sortByDueDate() {
         Collections.sort(todoList, new Comparator<TodoTask>() {
             @Override
@@ -148,7 +136,6 @@ public class TodoFragment extends Fragment {
         todoAdapter.notifyDataSetChanged();
     }
 
-    // Sort tasks by course
     private void sortByCourse() {
         Collections.sort(todoList, new Comparator<TodoTask>() {
             @Override
@@ -159,7 +146,6 @@ public class TodoFragment extends Fragment {
         todoAdapter.notifyDataSetChanged();
     }
 
-    // Sort tasks by complete/incomplete status
     private void sortByStatus() {
         Collections.sort(todoList, new Comparator<TodoTask>() {
             @Override
@@ -175,7 +161,6 @@ public class TodoFragment extends Fragment {
         todoAdapter.notifyDataSetChanged();
     }
 
-    // Clear edit text fields
     private void clearEditTexts(EditText... editTexts) {
         for (EditText editText : editTexts) {
             editText.getText().clear();
