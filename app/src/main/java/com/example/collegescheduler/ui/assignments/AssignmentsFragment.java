@@ -1,14 +1,17 @@
 package com.example.collegescheduler.ui.assignments;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -21,15 +24,31 @@ import com.example.collegescheduler.ui.assignments.AssignmentsViewModel;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AssignmentsFragment extends Fragment {
+public class AssignmentsFragment extends Fragment implements AdapterView.OnItemLongClickListener {
 
     private FragmentAssignmentsBinding binding;
     private AssignmentsViewModel assignmentsViewModel;
     private ListView listView;
     private EditText editTextTask, editTextDate, editTextClass;
     private Button btnAddAssignment;
-    private ArrayAdapter<String> assignmentListAdapter;
-    private List<String> assignmentList = new ArrayList<>();
+    private List<Assignment> assignmentList = new ArrayList<>();
+    private ArrayAdapter<Assignment> assignmentListAdapter;
+
+    public class Assignment {
+        String name;
+        String date;
+        String course;
+
+        public Assignment(String name, String date, String course) {
+            this.name = name;
+            this.date = date;
+            this.course = course;
+        }
+        @Override
+        public String toString() {
+            return String.format("Name: %s\nDate: %s\nCourse: %s", name, date, course);
+        }
+    }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -39,6 +58,7 @@ public class AssignmentsFragment extends Fragment {
         binding = FragmentAssignmentsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         initializeViews(root);
+        listView.setOnItemLongClickListener(this);
 
         btnAddAssignment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,14 +82,14 @@ public class AssignmentsFragment extends Fragment {
         listView = root.findViewById(R.id.listViewA);
     }
     private void addAssignment() {
-        String assignmentDetails = getAssignmentDetails();
+        Assignment assignmentDetails = getAssignmentDetails();
         if (assignmentDetails != null) {
             assignmentList.add(assignmentDetails);
             assignmentListAdapter.notifyDataSetChanged();
             clearInputFields();
         }
     }
-    private String getAssignmentDetails() {
+    private Assignment getAssignmentDetails() {
         String name = editTextTask.getText().toString().trim();
         String date = editTextDate.getText().toString().trim();
         String course = editTextClass.getText().toString().trim();
@@ -80,12 +100,63 @@ public class AssignmentsFragment extends Fragment {
         }
 
 
-        return String.format("Name: %s\nDate: %s\nCourse: %s", name, date, course);
+        return new Assignment(name, date, course);
     }
     private void clearInputFields() {
         editTextTask.setText("");
         editTextDate.setText("");
         editTextClass.setText("");
+    }
+
+    @Override
+    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+        Assignment assignmentObject = assignmentList.get(position);
+        editButtonPopup(view, assignmentObject, position);
+        return false;
+    }
+
+    public void editButtonPopup(View view, Assignment assignmentObject, int position) {
+        LayoutInflater inflater = getLayoutInflater();
+        View alertLayout = inflater.inflate(R.layout.edit_popup_assignments, null);
+        final EditText titleInput = alertLayout.findViewById(R.id.editTextTitleAP);
+        final EditText dateInput = alertLayout.findViewById(R.id.editTextDueAP);
+        final EditText classInput = alertLayout.findViewById(R.id.editTextClassAP);
+
+        EditText[] inputs = {titleInput, dateInput, classInput};
+        String[] assignmentInfo = {assignmentObject.name, assignmentObject.date, assignmentObject.course};
+
+        for (int idx = 0; idx < inputs.length; idx++) {
+            inputs[idx].setText(assignmentInfo[idx]);
+        }
+
+        AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
+        alert.setTitle("Edit/ Delete Assignment");
+        // this is set the view from XML inside AlertDialog
+        alert.setView(alertLayout);
+        // disallow cancel of AlertDialog on click of back button and outside touch
+        alert.setCancelable(false);
+        alert.setNeutralButton("Cancel", (dialog, which) -> Toast.makeText(getContext(), "Action Canceled", Toast.LENGTH_SHORT).show());
+        alert.setNegativeButton("Delete", (dialog, which) -> {
+
+            Toast.makeText(getContext(), "Assignment Deleted", Toast.LENGTH_LONG).show();
+            assignmentList.remove(position);
+            assignmentListAdapter.notifyDataSetChanged();
+        });
+        alert.setPositiveButton("Edit", (dialog, which) -> {
+            String title = titleInput.getText().toString().trim();
+            String date = dateInput.getText().toString().trim();
+            String className = classInput.getText().toString().trim();
+
+            if (title.isEmpty() || date.isEmpty() || className.isEmpty()) {
+                Toast.makeText(getContext(), "Cannot Have Empty Entries", Toast.LENGTH_LONG).show();
+            } else {
+                assignmentList.set(position, new Assignment(title, date, className));
+                assignmentListAdapter.notifyDataSetChanged();
+                Toast.makeText(getContext(), "Assignment Edited", Toast.LENGTH_LONG).show();
+            }
+        });
+        AlertDialog dialog = alert.create();
+        dialog.show();
     }
     @Override
     public void onDestroyView() {

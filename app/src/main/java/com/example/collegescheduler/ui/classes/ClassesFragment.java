@@ -20,7 +20,6 @@ import com.example.collegescheduler.R;
 import com.example.collegescheduler.databinding.FragmentClassesBinding;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class ClassesFragment extends Fragment implements AdapterView.OnItemLongClickListener {
 
@@ -130,7 +129,7 @@ public class ClassesFragment extends Fragment implements AdapterView.OnItemLongC
     }
     public void editButtonPopup(View view, Class classObject, int position) {
         LayoutInflater inflater = getLayoutInflater();
-        View alertLayout = inflater.inflate(R.layout.edit_popup, null);
+        View alertLayout = inflater.inflate(R.layout.edit_popup_classes, null);
         final EditText sectionInput = alertLayout.findViewById(R.id.editTextSectionCP);
         final EditText dateStartInput = alertLayout.findViewById(R.id.editTextDateStartCP);
         final EditText dateEndInput = alertLayout.findViewById(R.id.editTextDateEndCP);
@@ -177,8 +176,6 @@ public class ClassesFragment extends Fragment implements AdapterView.OnItemLongC
                 adapter.notifyDataSetChanged();
                 Toast.makeText(getContext(), "Class Edited", Toast.LENGTH_LONG).show();
             }
-
-
         });
         AlertDialog dialog = alert.create();
         dialog.show();
