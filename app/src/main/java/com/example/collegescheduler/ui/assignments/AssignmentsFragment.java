@@ -5,34 +5,32 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.collegescheduler.R;
 import com.example.collegescheduler.databinding.FragmentAssignmentsBinding;
-import com.example.collegescheduler.ui.assignments.AssignmentsViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AssignmentsFragment extends Fragment implements AdapterView.OnItemLongClickListener {
+public class AssignmentsFragment extends Fragment implements AssignmentListAdapter.OnAssignmentLongClickListener {
 
     private FragmentAssignmentsBinding binding;
     private AssignmentsViewModel assignmentsViewModel;
-    private ListView listView;
+    private RecyclerView recyclerView;
     private EditText editTextTask, editTextDate, editTextClass;
     private Button btnAddAssignment;
     private List<Assignment> assignmentList = new ArrayList<>();
-    private ArrayAdapter<Assignment> assignmentListAdapter;
+    private AssignmentListAdapter assignmentListAdapter;
 
     public class Assignment {
         String name;
@@ -44,21 +42,22 @@ public class AssignmentsFragment extends Fragment implements AdapterView.OnItemL
             this.date = date;
             this.course = course;
         }
+
         @Override
         public String toString() {
             return String.format("Name: %s\nDate: %s\nCourse: %s", name, date, course);
         }
     }
 
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        AssignmentsViewModel galleryViewModel =
+        assignmentsViewModel =
                 new ViewModelProvider(this).get(AssignmentsViewModel.class);
 
         binding = FragmentAssignmentsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         initializeViews(root);
-        listView.setOnItemLongClickListener(this);
 
         btnAddAssignment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,20 +66,22 @@ public class AssignmentsFragment extends Fragment implements AdapterView.OnItemL
             }
         });
 
-        assignmentListAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_list_item_1, assignmentList);
-        listView.setAdapter(assignmentListAdapter);
-        final TextView textView = binding.textViewA;
-        galleryViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+        assignmentListAdapter = new AssignmentListAdapter(assignmentList);
+        assignmentListAdapter.setOnAssignmentLongClickListener(this);
+        recyclerView.setAdapter(assignmentListAdapter);
+
         return root;
     }
+
     private void initializeViews(View root) {
         editTextTask = root.findViewById(R.id.editTextTaskA);
         editTextDate = root.findViewById(R.id.editTextDateA);
         editTextClass = root.findViewById(R.id.editTextClassA);
-
         btnAddAssignment = root.findViewById(R.id.btnAddAssignments);
-        listView = root.findViewById(R.id.listViewA);
+        recyclerView = root.findViewById(R.id.recyclerViewA);
     }
+
     private void addAssignment() {
         Assignment assignmentDetails = getAssignmentDetails();
         if (assignmentDetails != null) {
@@ -89,19 +90,19 @@ public class AssignmentsFragment extends Fragment implements AdapterView.OnItemL
             clearInputFields();
         }
     }
+
     private Assignment getAssignmentDetails() {
         String name = editTextTask.getText().toString().trim();
         String date = editTextDate.getText().toString().trim();
         String course = editTextClass.getText().toString().trim();
 
-
         if (name.isEmpty() || date.isEmpty() || course.isEmpty()) {
             return null;
         }
 
-
         return new Assignment(name, date, course);
     }
+
     private void clearInputFields() {
         editTextTask.setText("");
         editTextDate.setText("");
@@ -109,10 +110,9 @@ public class AssignmentsFragment extends Fragment implements AdapterView.OnItemL
     }
 
     @Override
-    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+    public void onAssignmentLongClick(View view, int position) {
         Assignment assignmentObject = assignmentList.get(position);
         editButtonPopup(view, assignmentObject, position);
-        return false;
     }
 
     public void editButtonPopup(View view, Assignment assignmentObject, int position) {
@@ -137,7 +137,6 @@ public class AssignmentsFragment extends Fragment implements AdapterView.OnItemL
         alert.setCancelable(false);
         alert.setNeutralButton("Cancel", (dialog, which) -> Toast.makeText(getContext(), "Action Canceled", Toast.LENGTH_SHORT).show());
         alert.setNegativeButton("Delete", (dialog, which) -> {
-
             Toast.makeText(getContext(), "Assignment Deleted", Toast.LENGTH_LONG).show();
             assignmentList.remove(position);
             assignmentListAdapter.notifyDataSetChanged();
@@ -158,6 +157,7 @@ public class AssignmentsFragment extends Fragment implements AdapterView.OnItemL
         AlertDialog dialog = alert.create();
         dialog.show();
     }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
