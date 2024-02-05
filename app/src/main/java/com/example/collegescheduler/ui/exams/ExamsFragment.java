@@ -15,7 +15,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.collegescheduler.R;
 import com.example.collegescheduler.databinding.FragmentExamsBinding;
+import com.example.collegescheduler.ui.classes.ClassesFragment;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +30,29 @@ public class ExamsFragment extends Fragment {
     private EditText editTextName, editTextDate, editTextCourse, editTextTime, editTextLocation;
     private Button btnAddExam;
     private ExamListAdapter examListAdapter;
-    private List<String> examList = new ArrayList<>();
+    private List<Exam> examList;
+
+    public class Exam {
+        String name;
+        String date;
+        String course;
+        String time;
+        String location;
+
+        public Exam(String name, String date, String course, String time, String location) {
+            this.name = name;
+            this.date = date;
+            this.course = course;
+            this.time = time;
+            this.location = location;
+        }
+
+        @Override
+        public String toString() {
+            return String.format("Name: %s\nDate: %s\nCourse: %s\nTime: %s\nLocation: %s",
+                    name, date, course, time, location);
+        }
+    }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -37,8 +61,18 @@ public class ExamsFragment extends Fragment {
         binding = FragmentExamsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
+        if (savedInstanceState != null) {
+            //not equal null means there is a past record, so update
+            examList = (ArrayList<Exam>) savedInstanceState.getSerializable("examList");
+        } else {
+            if (examList != null) {
+                //returning from backstack, data is fine, do nothing
+            } else {
+                //newly created make the new arraylist
+                examList = new ArrayList<>();
+            }
+        }
         initializeViews(root);
-
         btnAddExam.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -65,7 +99,7 @@ public class ExamsFragment extends Fragment {
     }
 
     private void addExam() {
-        String examDetails = getExamDetails();
+        Exam examDetails = getExamDetails();
         if (examDetails != null) {
             examList.add(examDetails);
             examListAdapter.notifyDataSetChanged();
@@ -73,7 +107,7 @@ public class ExamsFragment extends Fragment {
         }
     }
 
-    private String getExamDetails() {
+    private Exam getExamDetails() {
         String name = editTextName.getText().toString().trim();
         String date = editTextDate.getText().toString().trim();
         String course = editTextCourse.getText().toString().trim();
@@ -84,7 +118,7 @@ public class ExamsFragment extends Fragment {
             return null;
         }
 
-        return String.format("Name: %s\nDate: %s\nCourse: %s\nTime: %s\nLocation: %s", name, date, course, time, location);
+        return new Exam(name, date, course, time, location);
     }
 
     private void clearInputFields() {
@@ -98,5 +132,11 @@ public class ExamsFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putSerializable("examList", (Serializable) examList);
     }
 }

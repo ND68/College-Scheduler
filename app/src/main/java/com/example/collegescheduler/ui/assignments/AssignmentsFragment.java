@@ -20,7 +20,9 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.collegescheduler.R;
 import com.example.collegescheduler.databinding.FragmentAssignmentsBinding;
 import com.example.collegescheduler.ui.assignments.AssignmentsViewModel;
+import com.example.collegescheduler.ui.classes.ClassesFragment;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,6 +60,18 @@ public class AssignmentsFragment extends Fragment implements AdapterView.OnItemL
         binding = FragmentAssignmentsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         initializeViews(root);
+        if (savedInstanceState != null) {
+            //not equal null means there is a past record, so update
+            assignmentList =(ArrayList<Assignment>) savedInstanceState.getSerializable("assignmentList");
+        } else {
+            if (assignmentList != null) {
+                //returning from backstack, data is fine, do nothing
+            } else {
+                //newly created make the new arraylist
+                assignmentList = new ArrayList<>();
+            }
+        }
+
         listView.setOnItemLongClickListener(this);
 
         btnAddAssignment.setOnClickListener(new View.OnClickListener() {
@@ -162,5 +176,11 @@ public class AssignmentsFragment extends Fragment implements AdapterView.OnItemL
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putSerializable("assignmentList", (Serializable) assignmentList);
     }
 }

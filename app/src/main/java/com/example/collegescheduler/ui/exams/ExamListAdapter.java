@@ -14,9 +14,9 @@ import java.util.List;
 
 public class ExamListAdapter extends RecyclerView.Adapter<ExamListAdapter.ExamViewHolder> {
 
-    private List<String> examList;
+    private List<ExamsFragment.Exam> examList;
 
-    public ExamListAdapter(List<String> examList) {
+    public ExamListAdapter(List<ExamsFragment.Exam> examList) {
         this.examList = examList;
     }
 
@@ -45,8 +45,8 @@ public class ExamListAdapter extends RecyclerView.Adapter<ExamListAdapter.ExamVi
             textViewExam = itemView.findViewById(R.id.textViewExam);
         }
 
-        public void bind(String examDetails) {
-            textViewExam.setText(examDetails);
+        public void bind(ExamsFragment.Exam examDetails) {
+            textViewExam.setText(examDetails.toString());
         }
     }
 }
