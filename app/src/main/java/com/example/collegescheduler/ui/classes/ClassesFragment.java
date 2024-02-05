@@ -26,7 +26,7 @@ public class ClassesFragment extends Fragment implements AdapterView.OnItemLongC
     private FragmentClassesBinding binding;
     ListView listView;
     private EditText textSection, textDateStart, textDateEnd, textTime, textDays, textLocation, textInstructor;
-    ArrayList<Class> classes;
+    ArrayList<Class> classList;
     ArrayAdapter<Class> adapter;
     private Button confirmEdit;
 
@@ -63,10 +63,21 @@ public class ClassesFragment extends Fragment implements AdapterView.OnItemLongC
         binding = FragmentClassesBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        listView = root.findViewById(R.id.listViewClasses);
-        classes = new ArrayList<>();
+        if (savedInstanceState != null) {
+            //not equal null means there is a past record, so update
+            classList =(ArrayList<Class>) savedInstanceState.getSerializable("classList");
+        } else {
+            if (classList != null) {
+                //returning from backstack, data is fine, do nothing
+            } else {
+                //newly created make the new arraylist
+                classList = new ArrayList<>();
+            }
+        }
 
-        adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, classes);
+        listView = root.findViewById(R.id.listViewClasses);
+
+        adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, classList);
         listView.setAdapter(adapter);
         listView.setOnItemLongClickListener(this);
         initializeViews(root);
@@ -77,8 +88,8 @@ public class ClassesFragment extends Fragment implements AdapterView.OnItemLongC
                 addClasses();
             }
         });
-
         return root;
+
     }
     private void initializeViews(View root) {
         textSection = root.findViewById(R.id.editTextSectionC);
@@ -95,7 +106,7 @@ public class ClassesFragment extends Fragment implements AdapterView.OnItemLongC
     private void addClasses() {
         Class classDetails = getClassDetails();
         if (classDetails != null) {
-            classes.add(classDetails);
+            classList.add(classDetails);
             adapter.notifyDataSetChanged();
             clearInputFields();
         }
@@ -156,7 +167,7 @@ public class ClassesFragment extends Fragment implements AdapterView.OnItemLongC
         alert.setNegativeButton("Delete", (dialog, which) -> {
 
             Toast.makeText(getContext(), "Class Deleted", Toast.LENGTH_LONG).show();
-            classes.remove(position);
+            classList.remove(position);
             adapter.notifyDataSetChanged();
         });
         alert.setPositiveButton("Edit", (dialog, which) -> {
@@ -172,7 +183,7 @@ public class ClassesFragment extends Fragment implements AdapterView.OnItemLongC
                     days.isEmpty() || location.isEmpty() || instructor.isEmpty()) {
                 Toast.makeText(getContext(), "Cannot Have Empty Entries", Toast.LENGTH_LONG).show();
             } else {
-                classes.set(position, new Class(section, dateStart, dateEnd, time, days, location, instructor));
+                classList.set(position, new Class(section, dateStart, dateEnd, time, days, location, instructor));
                 adapter.notifyDataSetChanged();
                 Toast.makeText(getContext(), "Class Edited", Toast.LENGTH_LONG).show();
             }
@@ -180,17 +191,22 @@ public class ClassesFragment extends Fragment implements AdapterView.OnItemLongC
         AlertDialog dialog = alert.create();
         dialog.show();
     }
+
+    @Override
+    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+        Class classObject = classList.get(position);
+        editButtonPopup(view, classObject, position);
+
+        return false;
+    }
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
     }
-
     @Override
-    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-        Class classObject = classes.get(position);
-        editButtonPopup(view, classObject, position);
-
-        return false;
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putSerializable("classList", classList);
     }
 }

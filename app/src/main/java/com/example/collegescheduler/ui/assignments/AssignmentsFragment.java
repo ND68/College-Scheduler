@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -19,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.collegescheduler.R;
 import com.example.collegescheduler.databinding.FragmentAssignmentsBinding;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,6 +58,17 @@ public class AssignmentsFragment extends Fragment implements AssignmentListAdapt
         binding = FragmentAssignmentsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         initializeViews(root);
+        if (savedInstanceState != null) {
+            // not equal null means there is a past record, so update
+            assignmentList = (ArrayList<Assignment>) savedInstanceState.getSerializable("assignmentList");
+        } else {
+            if (assignmentList != null) {
+                // returning from backstack, data is fine, do nothing
+            } else {
+                // newly created make the new ArrayList
+                assignmentList = new ArrayList<>();
+            }
+        }
 
         btnAddAssignment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,10 +141,10 @@ public class AssignmentsFragment extends Fragment implements AssignmentListAdapt
         }
 
         AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
-        alert.setTitle("Edit/ Delete Assignment");
+        alert.setTitle("Edit/Delete Assignment");
         // this is set the view from XML inside AlertDialog
         alert.setView(alertLayout);
-        // disallow cancel of AlertDialog on click of back button and outside touch
+        // disallow cancel of AlertDialog on click of the back button and outside touch
         alert.setCancelable(false);
         alert.setNeutralButton("Cancel", (dialog, which) -> Toast.makeText(getContext(), "Action Canceled", Toast.LENGTH_SHORT).show());
         alert.setNegativeButton("Delete", (dialog, which) -> {
@@ -162,5 +173,11 @@ public class AssignmentsFragment extends Fragment implements AssignmentListAdapt
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putSerializable("assignmentList", (Serializable) assignmentList);
     }
 }
