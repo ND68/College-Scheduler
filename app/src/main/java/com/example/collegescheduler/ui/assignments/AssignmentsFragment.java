@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.collegescheduler.R;
 import com.example.collegescheduler.databinding.FragmentAssignmentsBinding;
-import com.example.collegescheduler.ui.todo.TodoTask;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -31,7 +30,7 @@ public class AssignmentsFragment extends Fragment implements AssignmentListAdapt
     private AssignmentsViewModel assignmentsViewModel;
     private RecyclerView recyclerView;
     private EditText editTextTask, editTextDate, editTextClass;
-    private Button btnAddAssignment;
+    private Button btnAddAssignment, btnSortByDueDate, btnSortByCourse;
     private List<AssignmentTask> assignmentList = new ArrayList<>();
     private AssignmentListAdapter assignmentListAdapter;
 
@@ -40,7 +39,7 @@ public class AssignmentsFragment extends Fragment implements AssignmentListAdapt
         private String course;
         private String dueDate;
 
-        public AssignmentTask(String name, String course, String dueDate) {
+        public AssignmentTask(String name, String dueDate, String course) {
             this.name = name;
             this.course = course;
             this.dueDate = dueDate;
@@ -58,7 +57,6 @@ public class AssignmentsFragment extends Fragment implements AssignmentListAdapt
             return dueDate;
         }
 
-
         @Override
         public String toString() {
             return String.format("Name: %s\nDate: %s\nCourse: %s", name, dueDate, course);
@@ -68,30 +66,21 @@ public class AssignmentsFragment extends Fragment implements AssignmentListAdapt
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        assignmentsViewModel =
-                new ViewModelProvider(this).get(AssignmentsViewModel.class);
+        assignmentsViewModel = new ViewModelProvider(this).get(AssignmentsViewModel.class);
 
         binding = FragmentAssignmentsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
         initializeViews(root);
+
         if (savedInstanceState != null) {
-            // not equal null means there is a past record, so update
             assignmentList = (ArrayList<AssignmentTask>) savedInstanceState.getSerializable("assignmentList");
         } else {
-            if (assignmentList != null) {
-                // returning from backstack, data is fine, do nothing
-            } else {
-                // newly created make the new ArrayList
-                assignmentList = new ArrayList<>();
-            }
+            assignmentList = new ArrayList<>();
         }
 
-        btnAddAssignment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addAssignment();
-            }
-        });
+        btnAddAssignment.setOnClickListener(v -> addAssignment());
+        btnSortByDueDate.setOnClickListener(v -> sortByDueDate());
+        btnSortByCourse.setOnClickListener(v -> sortByCourse());
 
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         assignmentListAdapter = new AssignmentListAdapter(assignmentList);
@@ -106,6 +95,8 @@ public class AssignmentsFragment extends Fragment implements AssignmentListAdapt
         editTextDate = root.findViewById(R.id.editTextDateA);
         editTextClass = root.findViewById(R.id.editTextClassA);
         btnAddAssignment = root.findViewById(R.id.btnAddAssignments);
+        btnSortByDueDate = root.findViewById(R.id.button);
+        btnSortByCourse = root.findViewById(R.id.button3);
         recyclerView = root.findViewById(R.id.recyclerViewA);
     }
 
@@ -141,24 +132,6 @@ public class AssignmentsFragment extends Fragment implements AssignmentListAdapt
         AssignmentTask assignmentObject = assignmentList.get(position);
         editButtonPopup(view, assignmentObject, position);
     }
-    private void sortByDueDate() {
-        Collections.sort(assignmentList, new Comparator<AssignmentTask>() {
-            public int compare(AssignmentTask task1, AssignmentTask task2) {
-                return task1.getDueDate().compareTo(task2.getDueDate());
-            }
-        });
-        assignmentListAdapter.notifyDataSetChanged();
-    }
-
-    private void sortByCourse() {
-        Collections.sort(assignmentList, new Comparator<AssignmentTask>() {
-            @Override
-            public int compare(AssignmentTask task1, AssignmentTask task2) {
-                return task1.getCourse().compareTo(task2.getCourse());
-            }
-        });
-        assignmentListAdapter.notifyDataSetChanged();
-    }
 
     public void editButtonPopup(View view, AssignmentTask assignmentObject, int position) {
         LayoutInflater inflater = getLayoutInflater();
@@ -176,9 +149,7 @@ public class AssignmentsFragment extends Fragment implements AssignmentListAdapt
 
         AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
         alert.setTitle("Edit/Delete Assignment");
-        // this is set the view from XML inside AlertDialog
         alert.setView(alertLayout);
-        // disallow cancel of AlertDialog on click of the back button and outside touch
         alert.setCancelable(false);
         alert.setNeutralButton("Cancel", (dialog, which) -> Toast.makeText(getContext(), "Action Canceled", Toast.LENGTH_SHORT).show());
         alert.setNegativeButton("Delete", (dialog, which) -> {
@@ -213,5 +184,24 @@ public class AssignmentsFragment extends Fragment implements AssignmentListAdapt
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
         savedInstanceState.putSerializable("assignmentList", (Serializable) assignmentList);
+    }
+
+    private void sortByDueDate() {
+        Collections.sort(assignmentList, new Comparator<AssignmentTask>() {
+            public int compare(AssignmentTask task1, AssignmentTask task2) {
+                return task1.getDueDate().compareTo(task2.getDueDate());
+            }
+        });
+        assignmentListAdapter.notifyDataSetChanged();
+    }
+
+    private void sortByCourse() {
+        Collections.sort(assignmentList, new Comparator<AssignmentTask>() {
+            @Override
+            public int compare(AssignmentTask task1, AssignmentTask task2) {
+                return task1.getCourse().compareTo(task2.getCourse());
+            }
+        });
+        assignmentListAdapter.notifyDataSetChanged();
     }
 }
