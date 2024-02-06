@@ -129,12 +129,9 @@ public class TodoFragment extends Fragment {
     }
 
     private void updateTaskStatus(int position, boolean isChecked) {
-        todoList.get(position).setCompleted(isChecked);
-        // Handle the logic to remove the task or update its status as needed
-        if (isChecked) {
-            todoList.remove(position);
-            todoAdapter.notifyDataSetChanged();
-        }
+        TodoTask task = todoList.get(position);
+        task.setCompleted(isChecked);
+        todoAdapter.notifyDataSetChanged();
     }
 
     private void sortByDueDate() {
@@ -159,21 +156,21 @@ public class TodoFragment extends Fragment {
 
 
     private void sortByStatus() {
-        if (todoList.isEmpty()) {
-            //
-        } else if (completedList.isEmpty()) {
-            for (TodoTask x : todoList) {
-                if (x.isCompleted()) {
-                    completedList.add(x);
-                    todoList.remove(x);
+        Collections.sort(todoList, new Comparator<TodoTask>() {
+            @Override
+            public int compare(TodoTask task1, TodoTask task2) {
+                // Incomplete tasks should come before completed tasks
+                if (!task1.isCompleted() && task2.isCompleted()) {
+                    return -1; // task1 comes before task2
+                } else if (task1.isCompleted() && !task2.isCompleted()) {
+                    return 1; // task2 comes before task1
+                } else {
+                    return 0; // no change in order
                 }
             }
-        } else {
-            for (TodoTask x : completedList) {
-                todoList.add(x);
-                completedList.remove(x);
-            }
-        }
+        });
+
+        // Notify the adapter of the change
         todoAdapter.notifyDataSetChanged();
     }
 
