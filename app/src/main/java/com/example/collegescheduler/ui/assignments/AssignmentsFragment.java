@@ -17,9 +17,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.collegescheduler.R;
 import com.example.collegescheduler.databinding.FragmentAssignmentsBinding;
+import com.example.collegescheduler.ui.todo.TodoTask;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class AssignmentsFragment extends Fragment implements AssignmentListAdapter.OnAssignmentLongClickListener {
@@ -29,23 +32,36 @@ public class AssignmentsFragment extends Fragment implements AssignmentListAdapt
     private RecyclerView recyclerView;
     private EditText editTextTask, editTextDate, editTextClass;
     private Button btnAddAssignment;
-    private List<Assignment> assignmentList = new ArrayList<>();
+    private List<AssignmentTask> assignmentList = new ArrayList<>();
     private AssignmentListAdapter assignmentListAdapter;
 
-    public class Assignment {
-        String name;
-        String date;
-        String course;
+    public class AssignmentTask {
+        private String name;
+        private String course;
+        private String dueDate;
 
-        public Assignment(String name, String date, String course) {
+        public AssignmentTask(String name, String course, String dueDate) {
             this.name = name;
-            this.date = date;
             this.course = course;
+            this.dueDate = dueDate;
         }
+
+        public String getName() {
+            return name;
+        }
+
+        public String getCourse() {
+            return course;
+        }
+
+        public String getDueDate() {
+            return dueDate;
+        }
+
 
         @Override
         public String toString() {
-            return String.format("Name: %s\nDate: %s\nCourse: %s", name, date, course);
+            return String.format("Name: %s\nDate: %s\nCourse: %s", name, dueDate, course);
         }
     }
 
@@ -60,7 +76,7 @@ public class AssignmentsFragment extends Fragment implements AssignmentListAdapt
         initializeViews(root);
         if (savedInstanceState != null) {
             // not equal null means there is a past record, so update
-            assignmentList = (ArrayList<Assignment>) savedInstanceState.getSerializable("assignmentList");
+            assignmentList = (ArrayList<AssignmentTask>) savedInstanceState.getSerializable("assignmentList");
         } else {
             if (assignmentList != null) {
                 // returning from backstack, data is fine, do nothing
@@ -94,7 +110,7 @@ public class AssignmentsFragment extends Fragment implements AssignmentListAdapt
     }
 
     private void addAssignment() {
-        Assignment assignmentDetails = getAssignmentDetails();
+        AssignmentTask assignmentDetails = getAssignmentDetails();
         if (assignmentDetails != null) {
             assignmentList.add(assignmentDetails);
             assignmentListAdapter.notifyDataSetChanged();
@@ -102,7 +118,7 @@ public class AssignmentsFragment extends Fragment implements AssignmentListAdapt
         }
     }
 
-    private Assignment getAssignmentDetails() {
+    private AssignmentTask getAssignmentDetails() {
         String name = editTextTask.getText().toString().trim();
         String date = editTextDate.getText().toString().trim();
         String course = editTextClass.getText().toString().trim();
@@ -111,7 +127,7 @@ public class AssignmentsFragment extends Fragment implements AssignmentListAdapt
             return null;
         }
 
-        return new Assignment(name, date, course);
+        return new AssignmentTask(name, date, course);
     }
 
     private void clearInputFields() {
@@ -122,11 +138,29 @@ public class AssignmentsFragment extends Fragment implements AssignmentListAdapt
 
     @Override
     public void onAssignmentLongClick(View view, int position) {
-        Assignment assignmentObject = assignmentList.get(position);
+        AssignmentTask assignmentObject = assignmentList.get(position);
         editButtonPopup(view, assignmentObject, position);
     }
+    private void sortByDueDate() {
+        Collections.sort(assignmentList, new Comparator<AssignmentTask>() {
+            public int compare(AssignmentTask task1, AssignmentTask task2) {
+                return task1.getDueDate().compareTo(task2.getDueDate());
+            }
+        });
+        assignmentListAdapter.notifyDataSetChanged();
+    }
 
-    public void editButtonPopup(View view, Assignment assignmentObject, int position) {
+    private void sortByCourse() {
+        Collections.sort(assignmentList, new Comparator<AssignmentTask>() {
+            @Override
+            public int compare(AssignmentTask task1, AssignmentTask task2) {
+                return task1.getCourse().compareTo(task2.getCourse());
+            }
+        });
+        assignmentListAdapter.notifyDataSetChanged();
+    }
+
+    public void editButtonPopup(View view, AssignmentTask assignmentObject, int position) {
         LayoutInflater inflater = getLayoutInflater();
         View alertLayout = inflater.inflate(R.layout.edit_popup_assignments, null);
         final EditText titleInput = alertLayout.findViewById(R.id.editTextTitleAP);
@@ -134,7 +168,7 @@ public class AssignmentsFragment extends Fragment implements AssignmentListAdapt
         final EditText classInput = alertLayout.findViewById(R.id.editTextClassAP);
 
         EditText[] inputs = {titleInput, dateInput, classInput};
-        String[] assignmentInfo = {assignmentObject.name, assignmentObject.date, assignmentObject.course};
+        String[] assignmentInfo = {assignmentObject.name, assignmentObject.dueDate, assignmentObject.course};
 
         for (int idx = 0; idx < inputs.length; idx++) {
             inputs[idx].setText(assignmentInfo[idx]);
@@ -160,7 +194,7 @@ public class AssignmentsFragment extends Fragment implements AssignmentListAdapt
             if (title.isEmpty() || date.isEmpty() || className.isEmpty()) {
                 Toast.makeText(getContext(), "Cannot Have Empty Entries", Toast.LENGTH_LONG).show();
             } else {
-                assignmentList.set(position, new Assignment(title, date, className));
+                assignmentList.set(position, new AssignmentTask(title, date, className));
                 assignmentListAdapter.notifyDataSetChanged();
                 Toast.makeText(getContext(), "Assignment Edited", Toast.LENGTH_LONG).show();
             }

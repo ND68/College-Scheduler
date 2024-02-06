@@ -14,10 +14,10 @@ import java.util.List;
 
 public class AssignmentListAdapter extends RecyclerView.Adapter<AssignmentListAdapter.AssignmentViewHolder> {
 
-    private List<AssignmentsFragment.Assignment> assignmentList;
+    private List<AssignmentsFragment.AssignmentTask> assignmentList;
     private OnAssignmentLongClickListener assignmentLongClickListener;
 
-    public AssignmentListAdapter(List<AssignmentsFragment.Assignment> assignmentList) {
+    public AssignmentListAdapter(List<AssignmentsFragment.AssignmentTask> assignmentList) {
         this.assignmentList = assignmentList;
     }
 
@@ -55,7 +55,7 @@ public class AssignmentListAdapter extends RecyclerView.Adapter<AssignmentListAd
             itemView.setOnLongClickListener(this);
         }
 
-        public void bind(AssignmentsFragment.Assignment assignment) {
+        public void bind(AssignmentsFragment.AssignmentTask assignment) {
             textViewAssignment.setText(assignment.toString());
         }
 
