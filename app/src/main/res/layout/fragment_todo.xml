@@ -27,19 +27,18 @@
         <ListView
             android:id="@+id/listViewT"
             android:layout_width="match_parent"
-            android:layout_height="500dp"
+            android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/textViewT"
-            tools:layout_editor_absoluteY="-137dp" />
+            app:layout_constraintTop_toBottomOf="@id/textViewT" />
 
         <EditText
             android:id="@+id/editTextDateT"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:ems="10"
-            android:hint="Due Date"
+            android:hint="@string/due_date"
             android:inputType="date"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.497"
@@ -53,7 +52,7 @@
             android:layout_marginTop="9dp"
             android:ems="10"
             android:inputType="text"
-            android:hint="Task Name"
+            android:hint="@string/task_name"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
@@ -67,7 +66,7 @@
             android:layout_marginTop="9dp"
             android:ems="10"
             android:inputType="text"
-            android:hint="Course"
+            android:hint="@string/course"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
@@ -77,37 +76,50 @@
             android:id="@+id/buttonAddTask"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Add Task"
+            android:text="@string/add_task"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/editTextDateT" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/sort_by"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toTopOf="@+id/buttonSortByCourse"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/buttonAddTask"
+            app:layout_constraintVertical_bias="1.0" />
 
         <Button
             android:id="@+id/buttonSortByDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Sort by Due Date"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:text="@string/due_date"
+            app:layout_constraintEnd_toStartOf="@+id/buttonSortByCourse"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/buttonAddTask" />
+            app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
         <Button
             android:id="@+id/buttonSortByCourse"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Sort by Course"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/buttonSortByDate" />
+            android:text="@string/course"
+            app:layout_constraintEnd_toStartOf="@+id/buttonSortByStatus"
+            app:layout_constraintStart_toEndOf="@+id/buttonSortByDate"
+            app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
         <Button
             android:id="@+id/buttonSortByStatus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Sort by Status"
+            android:text="@string/status"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/buttonSortByCourse" />
+            app:layout_constraintStart_toEndOf="@+id/buttonSortByCourse"
+            app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

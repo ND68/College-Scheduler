@@ -17,6 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.collegescheduler.R;
+import com.example.collegescheduler.ui.classes.ClassesFragment;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -41,8 +42,18 @@ public class TodoFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        if (savedInstanceState != null) {
+            //not equal null means there is a past record, so update
+            todoList =(ArrayList<TodoTask>) savedInstanceState.getSerializable("todoList");
+        } else {
+            if (todoList != null) {
+                //returning from backstack, data is fine, do nothing
+            } else {
+                //newly created make the new arraylist
+                todoList = new ArrayList<>();
+            }
+        }
 
-        todoList = new ArrayList<>();
         todoAdapter = new TodoListAdapter(getActivity(), todoList);
         listView = getView().findViewById(R.id.listViewT);
         listView.setAdapter(todoAdapter);
@@ -60,7 +71,6 @@ public class TodoFragment extends Fragment {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 // Handle the logic to edit or delete the task
-                editOrDeleteTask(position);
                 return true;
             }
         });
@@ -122,10 +132,6 @@ public class TodoFragment extends Fragment {
         }
     }
 
-    private void editOrDeleteTask(int position) {
-
-    }
-
     private void sortByDueDate() {
         Collections.sort(todoList, new Comparator<TodoTask>() {
             @Override
@@ -165,5 +171,9 @@ public class TodoFragment extends Fragment {
         for (EditText editText : editTexts) {
             editText.getText().clear();
         }
+    }
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putSerializable("todoList", todoList);
     }
 }
