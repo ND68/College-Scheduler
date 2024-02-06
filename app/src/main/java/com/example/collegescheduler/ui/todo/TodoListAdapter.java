@@ -5,7 +5,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -36,14 +38,16 @@ public class TodoListAdapter extends ArrayAdapter<TodoTask> {
         TodoTask currentTask = getItem(position);
 
         TextView taskNameTextView = convertView.findViewById(R.id.taskNameTextView);
-        TextView courseTextView = convertView.findViewById(R.id.courseTextView);
-        TextView dueDateTextView = convertView.findViewById(R.id.dueDateTextView);
+        /*TextView courseTextView = convertView.findViewById(R.id.courseTextView);
+        TextView dueDateTextView = convertView.findViewById(R.id.dueDateTextView); */
         CheckBox checkBox = convertView.findViewById(R.id.checkBox);
 
-        taskNameTextView.setText(currentTask.getName());
-        courseTextView.setText(currentTask.getCourse());
-        dueDateTextView.setText(currentTask.getDueDate());
+        taskNameTextView.setText(String.format("Task Name: %s\nCourse: %s\nDue Date: %s",
+                currentTask.getName(), currentTask.getCourse(), currentTask.getDueDate()));
+        /*courseTextView.setText(currentTask.getCourse());
+        dueDateTextView.setText(currentTask.getDueDate());*/
         checkBox.setChecked(currentTask.isCompleted());
+        checkBox.setFocusable(false);
 
         return convertView;
     }

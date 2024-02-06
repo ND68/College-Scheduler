@@ -1,6 +1,7 @@
 package com.example.collegescheduler.ui.todo;
 
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +27,7 @@ import java.util.Comparator;
 public class TodoFragment extends Fragment {
 
     private ArrayList<TodoTask> todoList;
+    private ArrayList<TodoTask> completedList;
     private TodoListAdapter todoAdapter;
     private ListView listView;
 
@@ -45,19 +47,20 @@ public class TodoFragment extends Fragment {
         if (savedInstanceState != null) {
             //not equal null means there is a past record, so update
             todoList =(ArrayList<TodoTask>) savedInstanceState.getSerializable("todoList");
+            completedList =(ArrayList<TodoTask>) savedInstanceState.getSerializable("completedList");
         } else {
             if (todoList != null) {
                 //returning from backstack, data is fine, do nothing
             } else {
                 //newly created make the new arraylist
                 todoList = new ArrayList<>();
+                completedList = new ArrayList<>();
             }
         }
 
         todoAdapter = new TodoListAdapter(getActivity(), todoList);
         listView = getView().findViewById(R.id.listViewT);
         listView.setAdapter(todoAdapter);
-
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -70,7 +73,9 @@ public class TodoFragment extends Fragment {
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                // Handle the logic to edit or delete the task
+                Toast.makeText(getActivity(), "Task name cannot be empty", Toast.LENGTH_SHORT).show();
+                TodoTask todoObject = todoList.get(position);
+                editButtonPopup(view, todoObject, position);
                 return true;
             }
         });
@@ -152,18 +157,23 @@ public class TodoFragment extends Fragment {
         todoAdapter.notifyDataSetChanged();
     }
 
+
     private void sortByStatus() {
-        Collections.sort(todoList, new Comparator<TodoTask>() {
-            @Override
-            public int compare(TodoTask task1, TodoTask task2) {
-                if (task1.isCompleted() && !task2.isCompleted()) {
-                    return 1;
-                } else if (!task1.isCompleted() && task2.isCompleted()) {
-                    return -1;
+        if (todoList.isEmpty()) {
+            //
+        } else if (completedList.isEmpty()) {
+            for (TodoTask x : todoList) {
+                if (x.isCompleted()) {
+                    completedList.add(x);
+                    todoList.remove(x);
                 }
-                return 0;
             }
-        });
+        } else {
+            for (TodoTask x : completedList) {
+                todoList.add(x);
+                completedList.remove(x);
+            }
+        }
         todoAdapter.notifyDataSetChanged();
     }
 
@@ -172,8 +182,54 @@ public class TodoFragment extends Fragment {
             editText.getText().clear();
         }
     }
+
+    public void editButtonPopup(View view, TodoTask todoObject, int position) {
+        LayoutInflater inflater = getLayoutInflater();
+        View alertLayout = inflater.inflate(R.layout.edit_popup_todos, null);
+        final EditText nameInput = alertLayout.findViewById(R.id.editTextNameTP);
+        final EditText courseInput = alertLayout.findViewById(R.id.editTextCourseTP);
+        final EditText dateInput = alertLayout.findViewById(R.id.editTextDateTP);
+
+        EditText[] inputs = {nameInput, courseInput, dateInput};
+        String[] todoInfo = {todoObject.getName(), todoObject.getCourse(), todoObject.getDueDate()};
+
+        for (int idx = 0; idx < inputs.length; idx++) {
+            inputs[idx].setText(todoInfo[idx]);
+        }
+
+        AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
+        alert.setTitle("Edit/ Delete Task");
+        // this is set the view from XML inside AlertDialog
+        alert.setView(alertLayout);
+        // disallow cancel of AlertDialog on click of back button and outside touch
+        alert.setCancelable(false);
+        alert.setNeutralButton("Cancel", (dialog, which) -> Toast.makeText(getContext(), "Action Canceled", Toast.LENGTH_SHORT).show());
+        alert.setNegativeButton("Delete", (dialog, which) -> {
+
+            Toast.makeText(getContext(), "Task Deleted", Toast.LENGTH_LONG).show();
+            todoList.remove(position);
+            todoAdapter.notifyDataSetChanged();
+        });
+        alert.setPositiveButton("Edit", (dialog, which) -> {
+            String name = nameInput.getText().toString().trim();
+            String course = courseInput.getText().toString().trim();
+            String date = dateInput.getText().toString().trim();
+
+            if (name.isEmpty() || course.isEmpty() || date.isEmpty()) {
+                Toast.makeText(getContext(), "Cannot Have Empty Entries", Toast.LENGTH_LONG).show();
+            } else {
+                todoList.set(position, new TodoTask(name, course, date, false));
+                todoAdapter.notifyDataSetChanged();
+                Toast.makeText(getContext(), "Class Edited", Toast.LENGTH_LONG).show();
+            }
+        });
+        AlertDialog dialog = alert.create();
+        dialog.show();
+    }
+
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
         savedInstanceState.putSerializable("todoList", todoList);
+        savedInstanceState.putSerializable("completedList", completedList);
     }
 }
